@@ -1,0 +1,42 @@
+# DEV ONLY!
+services:
+  db:
+    image: db
+
+    container_name: go_learning_db
+
+    restart: always
+
+    ports:
+      - 5433:5432
+
+    build:
+      context: ./db/
+      dockerfile: db.Dockerfile
+      target: db
+
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker_pass
+      POSTGRES_DB: go_learning
+
+  backend:
+    image: backend
+
+    container_name: go_learning_backend
+
+    restart: always
+
+    ports:
+      - 8080:8080
+
+    depends_on:
+      - db
+
+    build:
+      context: ./backend/
+      dockerfile: backend.Dockerfile
+      target: backend
+
+    environment:
+      DATABASE_URL: postgres://docker:docker_pass@db:5432/go_learning
