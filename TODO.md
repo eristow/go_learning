@@ -1,6 +1,6 @@
 ## TODO FE
 
-- [ ] Create simple FE
+- [ ] Add CRUD functions for albums
 
 - [ ] Dockerize FE
 
@@ -18,6 +18,8 @@
 
 ## TODO DEPLOY
 
+- [ ] Push code to GitHub as secondary remote
+
 - [ ] Create K8s config containers
 
 - [ ] Create Terraform config for K8s config
@@ -30,6 +32,7 @@
 
 
 ## DONE
+- [x] Create simple FE
 - [x] Change to using auto IDs for albums
 - [x] Use PSQL DB for BE instead of in-memory data
 

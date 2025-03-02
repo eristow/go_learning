@@ -22,7 +22,7 @@ func DbGetAlbums() ([]*AlbumResponse, error) {
 		for rows.Next() {
 			album := new(AlbumResponse)
 
-			err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price)
+			err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price, &album.ImageURL)
 
 			if err != nil {
 				return nil, err
@@ -42,7 +42,7 @@ func DbGetAlbum(id string) (*AlbumResponse, error) {
 
 	album := new(AlbumResponse)
 
-	err := row.Scan(&album.ID, &album.Title, &album.Artist, &album.Price)
+	err := row.Scan(&album.ID, &album.Title, &album.Artist, &album.Price, &album.ImageURL)
 
 	if err != nil {
 		return nil, err
@@ -52,14 +52,14 @@ func DbGetAlbum(id string) (*AlbumResponse, error) {
 }
 
 func DbCreateAlbum(album Album) (*AlbumResponse, error) {
-	query := `INSERT INTO albums (id, title, artist, price)
-						VALUES (DEFAULT, $1, $2, $3) RETURNING id, title, artist, price;`
+	query := `INSERT INTO albums (id, title, artist, price, image_url)
+						VALUES (DEFAULT, $1, $2, $3, $4) RETURNING id, title, artist, price, image_url;`
 
-	row := db.DBConn.QueryRow(context.Background(), query, album.Title, album.Artist, album.Price)
+	row := db.DBConn.QueryRow(context.Background(), query, album.Title, album.Artist, album.Price, album.ImageURL)
 
 	newAlbum := new(AlbumResponse)
 
-	err := row.Scan(&newAlbum.ID, &newAlbum.Title, &newAlbum.Artist, &newAlbum.Price)
+	err := row.Scan(&newAlbum.ID, &newAlbum.Title, &newAlbum.Artist, &newAlbum.Price, &newAlbum.ImageURL)
 
 	if err != nil {
 		return nil, err
@@ -69,13 +69,13 @@ func DbCreateAlbum(album Album) (*AlbumResponse, error) {
 }
 
 func DbDeleteAlbum(id string) (*AlbumResponse, error) {
-	query := `DELETE FROM albums WHERE id = $1 RETURNING id, title, artist, price;`
+	query := `DELETE FROM albums WHERE id = $1 RETURNING id, title, artist, price, image_url;`
 
 	row := db.DBConn.QueryRow(context.Background(), query, id)
 
 	album := new(AlbumResponse)
 
-	err := row.Scan(&album.ID, &album.Title, &album.Artist, &album.Price)
+	err := row.Scan(&album.ID, &album.Title, &album.Artist, &album.Price, &album.ImageURL)
 
 	if err != nil {
 		return nil, err

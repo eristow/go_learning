@@ -6,6 +6,7 @@ import (
 	"go_learning/album"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 )
@@ -27,6 +28,11 @@ func SetupRouter() *gin.Engine {
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+
+	corsConfig := cors.DefaultConfig()
+	// TODO: change to only allow docker containers
+	corsConfig.AllowAllOrigins = true
+	router.Use(cors.New(corsConfig))
 
 	router.GET("/albums", album.GetAlbums)
 	router.GET("/albums/:id", album.GetAlbumByID)

@@ -20,6 +20,12 @@ services:
       POSTGRES_PASSWORD: docker_pass
       POSTGRES_DB: go_learning
 
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U docker -d go_learning']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     image: backend
 
