@@ -1,4 +1,6 @@
-## TODO FF
+## TODO FE
+
+- [ ] Add tests
 
 - [ ] Use file uploaders for album art in edit/create pages
 
@@ -16,11 +18,16 @@
 
 - Keep Docker Compose as dev, and K8s as prod
 
-- [ ] Push code to GitHub as secondary remote
+- [ ] `Cross-site POST form submissions are forbidden` in K8s deploy this time
+  - Need to set `ORIGIN` env var in frontend to internal IP of pod
 
-- [ ] Create K8s config containers
+- [ ] Adjust K8s deploy for prod
+  - Env vars and passwords should be more secure
 
-- [ ] Create Terraform config for K8s config
+- [ ] Edit README
+
+- [ ] Create Terraform config for K8s config on AWS
+  - Will need to adjust PSQL DB URL
 
 - [ ] Create GitLab CI/CD
   - [ ] FE tests
@@ -30,6 +37,8 @@
 
 
 ## DONE
+- [x] Create K8s config containers
+- [x] Push code to GitHub as secondary remote
 - [x] Dockerize FE
 - [x] Co-locate `+page.server.ts` actions to a single location using named actions
 - [x] Use env var for backend URL

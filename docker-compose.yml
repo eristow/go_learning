@@ -1,9 +1,9 @@
 # DEV ONLY!
 services:
   db:
-    image: db
+    image: go-learning-db
 
-    container_name: go_learning_db
+    container_name: go-learning-db
 
     restart: always
 
@@ -27,9 +27,9 @@ services:
       retries: 5
 
   backend:
-    image: backend
+    image: go-learning-backend
 
-    container_name: go_learning_backend
+    container_name: go-learning-backend
 
     restart: always
 
@@ -48,9 +48,9 @@ services:
       DATABASE_URL: postgres://docker:docker_pass@db:5432/go_learning
 
   frontend:
-    image: frontend
+    image: go-learning-frontend
 
-    container_name: go_learning_frontend
+    container_name: go-learning-frontend
 
     restart: always
 
