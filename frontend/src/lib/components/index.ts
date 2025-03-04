@@ -8,3 +8,5 @@ export { default as AlbumsContainer } from './AlbumsContainer.svelte';
 export { default as AlbumImage } from './AlbumImage.svelte';
 export { default as Button } from './Button.svelte';
 export { default as NavButton } from './NavButton.svelte';
+export { default as Label } from './Label.svelte';
+export { default as Input } from './Input.svelte';

@@ -1,13 +1,9 @@
-## TODO FE
+## TODO FF
 
-- [ ] Add CRUD functions for albums
-
-- [ ] Dockerize FE
+- [ ] Use file uploaders for album art in edit/create pages
 
 
 ## TODO BE
-
-- [ ] Dockerize BE
 
 - [ ] Refactor existing tests
 
@@ -17,6 +13,8 @@
 
 
 ## TODO DEPLOY
+
+- Keep Docker Compose as dev, and K8s as prod
 
 - [ ] Push code to GitHub as secondary remote
 
@@ -32,7 +30,13 @@
 
 
 ## DONE
+- [x] Dockerize FE
+- [x] Co-locate `+page.server.ts` actions to a single location using named actions
+- [x] Use env var for backend URL
+- [x] Add CRUD functions for albums
+- [x] Create PUT route for updates
 - [x] Create simple FE
+- [x] Dockerize BE
 - [x] Change to using auto IDs for albums
 - [x] Use PSQL DB for BE instead of in-memory data
 

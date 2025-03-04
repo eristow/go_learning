@@ -68,6 +68,22 @@ func DbCreateAlbum(album Album) (*AlbumResponse, error) {
 	return newAlbum, nil
 }
 
+func DbUpdateAlbum(id string, album AlbumResponse) (*AlbumResponse, error) {
+	query := `UPDATE albums SET title = $1, artist = $2, price = $3, image_url = $4 WHERE id = $5 RETURNING id, title, artist, price, image_url;`
+
+	row := db.DBConn.QueryRow(context.Background(), query, album.Title, album.Artist, album.Price, album.ImageURL, id)
+
+	updatedAlbum := new(AlbumResponse)
+
+	err := row.Scan(&updatedAlbum.ID, &updatedAlbum.Title, &updatedAlbum.Artist, &updatedAlbum.Price, &updatedAlbum.ImageURL)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedAlbum, nil
+}
+
 func DbDeleteAlbum(id string) (*AlbumResponse, error) {
 	query := `DELETE FROM albums WHERE id = $1 RETURNING id, title, artist, price, image_url;`
 

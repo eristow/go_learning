@@ -34,7 +34,7 @@ func GetAlbumByID(c *gin.Context) {
 	c.JSON(http.StatusOK, album)
 }
 
-func PostAlbums(c *gin.Context) {
+func PostAlbum(c *gin.Context) {
 	var newAlbum Album
 
 	if err := c.BindJSON(&newAlbum); err != nil {
@@ -52,6 +52,27 @@ func PostAlbums(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, createdAlbum)
+}
+
+func PutAlbumByID(c *gin.Context) {
+	id := c.Param("id")
+	var newAlbum AlbumResponse
+
+	if err := c.BindJSON(&newAlbum); err != nil {
+		fmt.Fprintf(os.Stderr, "Error with album JSON: %v", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Error with album JSON"})
+		return
+	}
+
+	updatedAlbum, err := DbUpdateAlbum(id, newAlbum)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error updating album: %v", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Error updating album"})
+		return
+	}
+
+	c.JSON(http.StatusOK, updatedAlbum)
 }
 
 func DeleteAlbumByID(c *gin.Context) {

@@ -46,3 +46,24 @@ services:
 
     environment:
       DATABASE_URL: postgres://docker:docker_pass@db:5432/go_learning
+
+  frontend:
+    image: frontend
+
+    container_name: go_learning_frontend
+
+    restart: always
+
+    ports:
+      - 3000:3000
+
+    depends_on:
+      - backend
+
+    build:
+      context: ./frontend/
+      dockerfile: frontend.Dockerfile
+      target: frontend
+
+    environment:
+      PUBLIC_BACKEND_URL: http://backend:8080

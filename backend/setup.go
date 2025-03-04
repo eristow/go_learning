@@ -36,7 +36,8 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/albums", album.GetAlbums)
 	router.GET("/albums/:id", album.GetAlbumByID)
-	router.POST("/albums", album.PostAlbums)
+	router.PUT("/albums/:id", album.PutAlbumByID)
+	router.POST("/albums", album.PostAlbum)
 	router.DELETE("/albums/:id", album.DeleteAlbumByID)
 
 	return router

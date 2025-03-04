@@ -5,3 +5,10 @@ export type Album = {
 	price: number;
 	imageUrl: string;
 };
+
+export type AlbumDTO = {
+	title: string;
+	artist: string;
+	price: number;
+	imageUrl: string;
+};
