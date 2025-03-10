@@ -18,13 +18,8 @@
 
 - Keep Docker Compose as dev, and K8s as prod
 
-- [ ] `Cross-site POST form submissions are forbidden` in K8s deploy this time
-  - Need to set `ORIGIN` env var in frontend to internal IP of pod
-
 - [ ] Adjust K8s deploy for prod
   - Env vars and passwords should be more secure
-
-- [ ] Edit README
 
 - [ ] Create Terraform config for K8s config on AWS
   - Will need to adjust PSQL DB URL
@@ -37,6 +32,9 @@
 
 
 ## DONE
+- [x] Edit README
+- [x] `Cross-site POST form submissions are forbidden` in K8s deploy this time
+  - Need to set `ORIGIN` env var in frontend to internal IP of pod
 - [x] Create K8s config containers
 - [x] Push code to GitHub as secondary remote
 - [x] Dockerize FE

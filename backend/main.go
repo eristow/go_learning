@@ -5,11 +5,13 @@ import (
 	"go_learning/db"
 )
 
+var Run = run
+
 func main() {
 	Run()
 }
 
-func Run() {
+func run() {
 	// err := godotenv.Load()
 	// if err != nil {
 	// 	log.Fatal("Error loading .env file")

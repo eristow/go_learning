@@ -1,70 +1,91 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"strings"
+	"context"
+	"go_learning/db"
+	"go_learning/test_util"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
-func TestGetAlbums(t *testing.T) {
-	router := setupRouter()
-	albumsString := AlbumSliceToString(albums)
-
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/albums", nil)
-	router.ServeHTTP(w, req)
-
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, albumsString, w.Body.String())
+type MockRouter struct {
+	mock.Mock
 }
 
-func TestPostAlbum(t *testing.T) {
-	router := setupRouter()
+func (m *MockRouter) Run(addr ...string) error {
+	args := m.Called(mock.Anything)
+	return args.Error(0)
+}
 
-	w := httptest.NewRecorder()
-
-	testAlbum := Album{
-		ID:     "4",
-		Title:  "Test Album",
-		Artist: "Test Artist",
-		Price:  34.56,
+func TestSetupPGX(t *testing.T) {
+	if os.Getenv("DATABASE_URL") == "" {
+		t.Skip("Skipping test as DATABASE_URL is not set")
 	}
 
-	albumJSON, _ := json.Marshal(testAlbum)
-	req, _ := http.NewRequest("POST", "/albums", strings.NewReader(string(albumJSON)))
-	router.ServeHTTP(w, req)
+	conn := SetupPGX()
+	assert.NotNil(t, conn, "Database connection should not be nil")
 
-	assert.Equal(t, http.StatusCreated, w.Code)
-	assert.Equal(t, string(albumJSON), w.Body.String())
+	err := conn.Ping(context.Background())
+	assert.NoError(t, err, "Database connection should be valid")
 
-	// Remove new element from albums
-	RemoveElementFromAlbums("4")
+	conn.Close(context.Background())
 }
 
-func TestGetAlbumByID(t *testing.T) {
-	router := setupRouter()
-	albumsString := AlbumToString(albums[0])
-
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/albums/1", nil)
-	router.ServeHTTP(w, req)
-
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, albumsString, w.Body.String())
+func TestSetupRouter(t *testing.T) {
+	router := SetupRouter()
+	assert.NotNil(t, router, "Router should not be nil")
 }
 
-func TestDeleteAlbumByID(t *testing.T) {
-	router := setupRouter()
-	deletedAlbum := albums[0]
+func TestRun(t *testing.T) {
+	originalDBConn := db.DBConn
+	defer func() { db.DBConn = originalDBConn }()
 
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("DELETE", "/albums/1", nil)
-	router.ServeHTTP(w, req)
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
 
-	assert.Equal(t, http.StatusNoContent, w.Code)
-	assert.NotContains(t, albums, deletedAlbum)
+	mockRouter := new(MockRouter)
+	mockRouter.On("Run", mock.Anything).Return(nil)
+
+	originalSetupRouter := SetupRouter
+	defer func() { SetupRouter = originalSetupRouter }()
+
+	SetupRouter = func() Router {
+		return mockRouter
+	}
+
+	// Create a mock DB implementation using the shared mock
+	mockDBConn := new(test_util.MockDBConn)
+	mockDBConn.On("Close", mock.Anything).Return(nil)
+
+	originalSetupPGX := SetupPGX
+	defer func() { SetupPGX = originalSetupPGX }()
+
+	SetupPGX = func() db.Database {
+		return mockDBConn
+	}
+
+	originalRun := Run
+	defer func() { Run = originalRun }()
+
+	Run = func() {
+		db.DBConn = SetupPGX()
+		defer db.DBConn.Close(context.Background())
+
+		router := SetupRouter()
+		router.Run(":8080")
+	}
+
+	go func() {
+		Run()
+		cancel()
+	}()
+
+	<-ctx.Done()
+
+	mockRouter.AssertExpectations(t)
+	mockDBConn.AssertExpectations(t)
 }

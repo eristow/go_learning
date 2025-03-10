@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "go_learning_db",
+      "connectString": "postgres://docker:docker_pass@localhost:5433/go_learning?sslmode=disable"
+    }
+  ]
+}
