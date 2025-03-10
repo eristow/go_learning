@@ -7,11 +7,6 @@
 
 ## TODO BE
 
-- [ ] Refactor existing tests
-
-- [ ] Add tests for everything new
-
-- [ ] Convert to using classes instead of static methods in files?
 
 
 ## TODO DEPLOY
@@ -32,6 +27,9 @@
 
 
 ## DONE
+- [x] Refactor existing tests
+- [x] Add tests for everything new
+- [x] Convert to using classes instead of static methods in files?
 - [x] Edit README
 - [x] `Cross-site POST form submissions are forbidden` in K8s deploy this time
   - Need to set `ORIGIN` env var in frontend to internal IP of pod
