@@ -10,11 +10,11 @@
 
 <PageContainer>
 	<ContentContainer>
-		<H1>Album Edit</H1>
 		{#await album}
-			<P>Loading</P>
+			<P>Loading...</P>
 		{:then album}
 			<form action={`/album/${album.id}?/edit`} method="POST">
+				<H1>Album Edit</H1>
 				<div class="flex flex-col space-y-4">
 					<div>
 						<Label forField="albumTitle">Album Title:</Label>

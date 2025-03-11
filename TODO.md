@@ -1,7 +1,5 @@
 ## TODO FE
 
-- [ ] Add tests
-
 - [ ] Use file uploaders for album art in edit/create pages
 
 
@@ -27,6 +25,7 @@
 
 
 ## DONE
+- [x] Add tests
 - [x] Refactor existing tests
 - [x] Add tests for everything new
 - [x] Convert to using classes instead of static methods in files?

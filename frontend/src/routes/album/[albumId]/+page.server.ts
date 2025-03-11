@@ -29,7 +29,7 @@ export const actions = {
 
 		redirect(303, `/album/${newAlbum.id}`);
 	},
-	delete: async ({ params }) => {
+	delete: async ({ fetch, params }) => {
 		await deleteAlbum(fetch, params.albumId);
 
 		redirect(303, '/');

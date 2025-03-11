@@ -8,7 +8,7 @@
 <PageContainer>
 	<ContentContainer>
 		<H1>Album Create</H1>
-		<form action="/album?/create" method="POST">
+		<form action="/album?/create" method="POST" data-testid="form">
 			<div class="flex flex-col space-y-4">
 				<div>
 					<Label forField="albumTitle">Album Title:</Label>
