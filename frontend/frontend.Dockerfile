@@ -8,6 +8,10 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
+RUN pnpm lint
+
+RUN pnpm check
+
 RUN pnpm build
 
 RUN pnpm prune --production
