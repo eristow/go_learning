@@ -79,13 +79,14 @@ backend_docker:
     - docker:24-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
+    PUBLIC_BACKEND_URL: "https://api.example.com"
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd backend
-    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA -f backend.Dockerfile .
+    - docker build --build-arg PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL} -t $FRONTEND_IMAGE:$CI_COMMIT_SHA .
     - docker tag $BACKEND_IMAGE:$CI_COMMIT_SHA $BACKEND_IMAGE:latest
-    - docker run --rm $BACKEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Backend container test successful'"
+    - docker run --rm -e PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL} $FRONTEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Frontend container test successful'"
 
     # Push only on main branch
     - |

@@ -1,5 +1,8 @@
 FROM node:23.9 AS build
 
+ARG PUBLIC_BACKEND_URL
+ENV PUBLIC_BACKEND_URL=$PUBLIC_BACKEND_URL
+
 WORKDIR /staging
 
 COPY package.json pnpm-lock.yaml ./
