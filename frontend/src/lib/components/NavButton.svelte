@@ -1,6 +1,4 @@
 <script>
-	import { Button } from '$components';
-
 	let { children, href } = $props();
 </script>
 

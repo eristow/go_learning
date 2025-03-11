@@ -23,7 +23,7 @@
 		<P>Loading...</P>
 	{:then albums}
 		<AlbumsContainer>
-			{#each albums as album}
+			{#each albums as album (album.id)}
 				<AlbumCard {album}>
 					<H1>{album.title}</H1>
 					<H2>{album.artist}</H2>

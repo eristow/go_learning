@@ -4,7 +4,7 @@
 		id: string;
 		name: string;
 		required: boolean;
-		value?: any;
+		value?: string | number;
 		step?: string;
 	};
 
