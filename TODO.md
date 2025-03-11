@@ -17,10 +17,10 @@
 - [ ] Create Terraform config for K8s config on AWS
   - Will need to adjust PSQL DB URL
 
-- [ ] Create GitLab CI/CD
-  - [ ] FE tests
-  - [ ] BE tests
-  - [ ] Docker test creation
+- [x] Create GitLab CI/CD
+  - [x] FE tests
+  - [x] BE tests
+  - [x] Docker test creation
   - [ ] Deploy
 
 

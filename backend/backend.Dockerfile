@@ -1,5 +1,8 @@
 FROM golang:1.23.6 AS builder
 
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 WORKDIR /build
 
 COPY ./ ./
@@ -10,6 +13,9 @@ RUN CGO_ENABLED=0 go build -o ./main
 
 
 FROM scratch AS backend
+
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 WORKDIR /app
 
