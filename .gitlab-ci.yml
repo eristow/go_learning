@@ -1,0 +1,116 @@
+stages:
+  - test
+  - build
+  # - deploy  # Uncomment when ready for deployment
+
+variables:
+  # Docker image names
+  FRONTEND_IMAGE: $CI_REGISTRY_IMAGE/frontend
+  BACKEND_IMAGE: $CI_REGISTRY_IMAGE/backend
+  # Cache directories
+  PNPM_STORE_DIR: .pnpm-store
+
+# Cache configurations
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .pnpm-store/
+
+frontend_test:
+  stage: test
+  image: node:20-alpine
+  before_script:
+    - npm install -g pnpm
+    - cd frontend
+    - pnpm install
+  script:
+    - pnpm run lint
+    - pnpm run test
+  artifacts:
+    paths:
+      - frontend/coverage/
+    expire_in: 1 week
+
+backend_test:
+  stage: test
+  image: golang:1.22-alpine
+  before_script:
+    - cd backend
+    - go mod download
+  script:
+    - go test -v ./...
+  artifacts:
+    paths:
+      - backend/coverage/
+    expire_in: 1 week
+
+frontend_docker:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd frontend
+    - docker build -t $FRONTEND_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $FRONTEND_IMAGE:$CI_COMMIT_SHA $FRONTEND_IMAGE:latest
+    - docker run --rm $FRONTEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Frontend container test successful'"
+
+    # Push only on main branch
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        echo "Pushing frontend images to registry..."
+        docker push $FRONTEND_IMAGE:$CI_COMMIT_SHA
+        docker push $FRONTEND_IMAGE:latest
+      else
+        echo "Skipping push on non-main branch"
+      fi
+  rules:
+    - changes:
+        - frontend/**/*
+
+backend_docker:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd backend
+    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $BACKEND_IMAGE:$CI_COMMIT_SHA $BACKEND_IMAGE:latest
+    - docker run --rm $BACKEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Backend container test successful'"
+
+    # Push only on main branch
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        echo "Pushing backend images to registry..."
+        docker push $BACKEND_IMAGE:$CI_COMMIT_SHA
+        docker push $BACKEND_IMAGE:latest
+      else
+        echo "Skipping push on non-main branch"
+      fi
+  rules:
+    - changes:
+        - backend/**/*
+
+# Placeholder for future Terraform deployment to AWS
+# deploy_aws:
+#   stage: deploy
+#   image: hashicorp/terraform:latest
+#   before_script:
+#     - cd terraform
+#     - terraform init
+#   script:
+#     - terraform validate
+#     - terraform plan -out=tfplan
+#     - terraform apply -auto-approve tfplan
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
+#       when: manual  # Requires manual approval
