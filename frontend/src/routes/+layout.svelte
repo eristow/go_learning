@@ -19,4 +19,6 @@
 		</div>
 	</div>
 </div>
-{@render children()}
+{#if children}
+	{@render children()}
+{/if}
