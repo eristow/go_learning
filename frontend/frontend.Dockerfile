@@ -32,4 +32,4 @@ COPY --from=build /staging/build ./build
 COPY --from=build /staging/package.json ./package.json
 COPY --from=build /staging/node_modules ./node_modules
 
-ENTRYPOINT ["node", "--env-file=.env", "build"]
+ENTRYPOINT ["node", "build"]
