@@ -22,10 +22,12 @@ RUN pnpm prune --production
 
 FROM node:23.9 AS frontend
 
+ARG PUBLIC_BACKEND_URL
+ENV PUBLIC_BACKEND_URL=$PUBLIC_BACKEND_URL
+
 ENV NODE_ENV=production
 
 WORKDIR /app
-COPY --from=build /staging/.env ./.env
 COPY --from=build /staging/build ./build
 COPY --from=build /staging/package.json ./package.json
 COPY --from=build /staging/node_modules ./node_modules
