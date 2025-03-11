@@ -55,7 +55,7 @@ frontend_docker:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd frontend
-    - docker build -t $FRONTEND_IMAGE:$CI_COMMIT_SHA .
+    - docker build -t $FRONTEND_IMAGE:$CI_COMMIT_SHA -f frontend.Dockerfile .
     - docker tag $FRONTEND_IMAGE:$CI_COMMIT_SHA $FRONTEND_IMAGE:latest
     - docker run --rm $FRONTEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Frontend container test successful'"
 
@@ -83,7 +83,7 @@ backend_docker:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd backend
-    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA .
+    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA -f backend.Dockerfile .
     - docker tag $BACKEND_IMAGE:$CI_COMMIT_SHA $BACKEND_IMAGE:latest
     - docker run --rm $BACKEND_IMAGE:$CI_COMMIT_SHA sh -c "echo 'Backend container test successful'"
 
