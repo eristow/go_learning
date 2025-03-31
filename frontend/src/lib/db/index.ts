@@ -1,13 +1,15 @@
 import type { Album } from '$types';
 import type { AlbumDTO } from '$types/Album';
-import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 type Fetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
-const backendUrl = `${PUBLIC_BACKEND_URL}/albums`;
+const backendUrl = `${env.PUBLIC_BACKEND_URL}/albums`;
+console.log('Using API base URL:', backendUrl);
 
 export const getAlbums = async (fetch: Fetch): Promise<Album[]> => {
 	try {
+		console.log('Fetching albums from backend', backendUrl);
 		const albumsRes = await fetch(backendUrl);
 
 		if (albumsRes.status !== 200) {

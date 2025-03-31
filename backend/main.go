@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"go_learning/album"
 	"go_learning/db"
 )
 
@@ -20,6 +21,8 @@ func run() {
 
 	db.DBConn = SetupPGX()
 	defer db.DBConn.Close(context.Background())
+
+	album.InitRepository(db.DBConn)
 
 	router := SetupRouter()
 

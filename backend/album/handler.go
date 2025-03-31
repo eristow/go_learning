@@ -9,7 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var dbRepo Repository = NewDatabaseRepo(db.DBConn)
+var dbRepo Repository
+
+func InitRepository(db db.Database) {
+	dbRepo = NewDatabaseRepo(db)
+}
 
 func GetAllAlbums(c *gin.Context) {
 	ctx := c.Request.Context()

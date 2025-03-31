@@ -68,11 +68,11 @@ func (m *MockRepository) DeleteAlbum(ctx context.Context, id string) (*AlbumResp
 	return args.Get(0).(*AlbumResponse), args.Error(1)
 }
 
-var originalDbRepo *DatabaseRepo
+var originalDbRepo Repository
 
 func setupMockRepo() *MockRepository {
 	mockRepo := new(MockRepository)
-	originalDbRepo = dbRepo.(*DatabaseRepo)
+	originalDbRepo = dbRepo
 	dbRepo = mockRepo
 	return mockRepo
 }

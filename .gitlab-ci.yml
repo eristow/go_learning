@@ -104,7 +104,7 @@ backend_docker:
 # Placeholder for future Terraform deployment to AWS
 # deploy_aws:
 #   stage: deploy
-#   image: hashicorp/terraform:latest
+#   image: hashicorp/terraform:1.11.2
 #   before_script:
 #     - cd terraform
 #     - terraform init

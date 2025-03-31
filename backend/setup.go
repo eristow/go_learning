@@ -21,6 +21,7 @@ type RouterSetupFunc func() Router
 
 var SetupPGX PGXSetupFunc = setupPGX
 var SetupRouter RouterSetupFunc = setupRouter
+var BASE_URL string = "/api/v1"
 
 func setupPGX() db.Database {
 	dbURL := os.Getenv("DATABASE_URL")
@@ -45,11 +46,11 @@ func setupRouter() Router {
 	corsConfig.AllowAllOrigins = true
 	router.Use(cors.New(corsConfig))
 
-	router.GET("/albums", album.GetAllAlbums)
-	router.GET("/albums/:id", album.GetAlbumByID)
-	router.PUT("/albums/:id", album.PutAlbumByID)
-	router.POST("/albums", album.PostAlbum)
-	router.DELETE("/albums/:id", album.DeleteAlbumByID)
+	router.GET(BASE_URL+"/albums", album.GetAllAlbums)
+	router.GET(BASE_URL+"/albums/:id", album.GetAlbumByID)
+	router.PUT(BASE_URL+"/albums/:id", album.PutAlbumByID)
+	router.POST(BASE_URL+"/albums", album.PostAlbum)
+	router.DELETE(BASE_URL+"/albums/:id", album.DeleteAlbumByID)
 
 	return router
 }
