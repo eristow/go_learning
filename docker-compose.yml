@@ -28,6 +28,7 @@ services:
 
   backend:
     image: go-learning-backend
+    # image: registry.gitlab.com/eristow_dev/go_learning/backend:latest
 
     container_name: go-learning-backend
 
@@ -49,6 +50,7 @@ services:
 
   frontend:
     image: go-learning-frontend
+    # image: registry.gitlab.com/eristow_dev/go_learning/frontend:latest
 
     container_name: go-learning-frontend
 
