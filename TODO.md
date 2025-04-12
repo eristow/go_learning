@@ -9,13 +9,14 @@
 
 ## TODO DEPLOY
 
-- Keep Docker Compose as dev, and K8s as prod
-
-- [ ] Adjust K8s deploy for prod
-  - Env vars and passwords should be more secure
-
-- [ ] Create Terraform config for K8s config on AWS
+- [ ] Create Terraform config for deploy on AWS
+  - Using ECS Fargate instead of EKS to save money
   - Will need to adjust PSQL DB URL
+
+- [ ] Break up `main.tf` into modules for each AWS section
+  - RDS, ECS, networking, etc.
+
+- [ ] Create a Terraform config with EKS for learning
 
 - [x] Create GitLab CI/CD
   - [x] FE tests

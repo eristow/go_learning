@@ -46,6 +46,11 @@ func setupRouter() Router {
 	corsConfig.AllowAllOrigins = true
 	router.Use(cors.New(corsConfig))
 
+	router.GET(BASE_URL+"/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+		})
+	})
 	router.GET(BASE_URL+"/albums", album.GetAllAlbums)
 	router.GET(BASE_URL+"/albums/:id", album.GetAlbumByID)
 	router.PUT(BASE_URL+"/albums/:id", album.PutAlbumByID)
