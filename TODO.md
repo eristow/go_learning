@@ -9,9 +9,10 @@
 
 ## TODO DEPLOY
 
-- [ ] Create Terraform config for deploy on AWS
-  - Using ECS Fargate instead of EKS to save money
-  - Will need to adjust PSQL DB URL
+- [ ] Switch to using HTTPS and AWS Cert Manager
+
+- [ ] Switch to using private VPC and NAT Gateway
+  - [ ] Still have ALB exposed publicly
 
 - [ ] Break up `main.tf` into modules for each AWS section
   - RDS, ECS, networking, etc.
@@ -26,6 +27,9 @@
 
 
 ## DONE
+- [x] Create Terraform config for deploy on AWS
+  - Using ECS Fargate instead of EKS to save money
+  - Will need to adjust PSQL DB URL
 - [x] Add tests
 - [x] Refactor existing tests
 - [x] Add tests for everything new
